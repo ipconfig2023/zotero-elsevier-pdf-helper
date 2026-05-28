@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<overlay id="elsevier-pdf-helper-overlay"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <menubar id="main-menubar">
+    <menu id="elsevier-pdf-helper-overlay-menu" label="Elsevier PDF">
+      <menupopup>
+        <menuitem id="elsevier-pdf-helper-overlay-authorize-direct"
+                  label="Authorize Elsevier in Zotero"
+                  oncommand="Zotero.ElsevierPDFHelper.openElsevierDirectAuthorization();"/>
+        <menuseparator/>
+        <menuitem id="elsevier-pdf-helper-overlay-selected"
+                  label="Download PDF for Selected Items"
+                  oncommand="Zotero.ElsevierPDFHelper.downloadSelectedItems();"/>
+        <menuitem id="elsevier-pdf-helper-overlay-visible"
+                  label="Batch Download PDFs for Current View"
+                  oncommand="Zotero.ElsevierPDFHelper.downloadVisibleItems();"/>
+      </menupopup>
+    </menu>
+  </menubar>
+  <menupopup id="zotero-itemmenu">
+    <menuseparator id="elsevier-pdf-helper-overlay-separator"/>
+    <menu id="elsevier-pdf-helper-overlay-item-menu" label="Elsevier PDF Helper">
+      <menupopup>
+        <menuitem id="elsevier-pdf-helper-overlay-item-authorize-direct"
+                  label="Authorize Elsevier in Zotero"
+                  oncommand="Zotero.ElsevierPDFHelper.openElsevierDirectAuthorization();"/>
+        <menuseparator/>
+        <menuitem id="elsevier-pdf-helper-overlay-item-selected"
+                  label="Download PDF for Selected Items"
+                  oncommand="Zotero.ElsevierPDFHelper.downloadSelectedItems();"/>
+        <menuitem id="elsevier-pdf-helper-overlay-item-visible"
+                  label="Batch Download PDFs for Current View"
+                  oncommand="Zotero.ElsevierPDFHelper.downloadVisibleItems();"/>
+      </menupopup>
+    </menu>
+  </menupopup>
+</overlay>
