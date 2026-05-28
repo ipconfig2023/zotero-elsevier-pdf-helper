@@ -1,0 +1,4 @@
+content elsevier-pdf-helper chrome/content/
+locale elsevier-pdf-helper en-US locale/en-US/
+locale elsevier-pdf-helper zh-CN locale/zh-CN/
+overlay chrome://zotero/content/zoteroPane.xhtml chrome://elsevier-pdf-helper/content/overlay.xul
