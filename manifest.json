@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Elsevier PDF Helper",
-  "version": "0.2.5",
+  "version": "0.2.7",
   "description": "Download legally accessible Elsevier/ScienceDirect PDFs and attach them to Zotero items.",
   "author": "Codex",
   "homepage_url": "https://github.com/ipconfig2023/zotero-elsevier-pdf-helper",

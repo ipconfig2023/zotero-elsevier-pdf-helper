@@ -7,7 +7,8 @@ if (typeof elsevierPDF === "undefined") {
   const TAG_FAILED = "PDF/Elsevier下载失败";
   const TAG_NO_ACCESS = "PDF/无合法访问权限";
   const TAG_NOT_ELSEVIER = "PDF/非Elsevier";
-  const USER_AGENT = "Zotero Elsevier PDF Helper/0.2.3";
+  const USER_AGENT = "Zotero Elsevier PDF Helper/0.2.7";
+  const ATTANGER_AUTO_MOVE_PREF = "extensions.zotero.zoteroattanger.autoMove";
   const STPAPER_DATABASE_URL = "https://www.stpaper.cn/microapp/widget/tools/database";
   const ELSEVIER_AUTH_URL = "https://auth.elsevier.com/ShibAuth/institutionLogin?entityID=https%3A%2F%2Fpassport.escience.cn%2Fidp%2Fshibboleth&appReturnURL=https%3A%2F%2Fwww.sciencedirect.com%2Fuser%2Frouter%2Fshib%3FtargetURL%3Dhttps%253A%252F%252Fwww.sciencedirect.com%252Fuser%252Frouter%252Flogin%253FtargetURL%253Dhttp%25253A%25252F%25252Fwww.sciencedirect.com%25252F";
   const BATCH_CONFIRM_THRESHOLD = 20;
@@ -550,14 +551,49 @@ if (typeof elsevierPDF === "undefined") {
     }
 
     if (Zotero.Attachments.importFromFile) {
-      return await Zotero.Attachments.importFromFile({
+      return await this.withAttangerAutoMoveSuspended(async () => Zotero.Attachments.importFromFile({
         file: finalPath,
         parentItemID: item.id,
         contentType: "application/pdf",
         title: attachmentTitle || "Elsevier PDF",
-      });
+        fileBaseName: safeTitle || "Elsevier PDF",
+        moveFile: true,
+      }));
     }
     throw new Error("当前 Zotero 版本没有可用的附件导入 API");
+  };
+
+  elsevierPDF.withAttangerAutoMoveSuspended = async function(callback) {
+    let originalValue;
+    let canRestore = false;
+    let disabled = false;
+    try {
+      originalValue = Zotero.Prefs.get(ATTANGER_AUTO_MOVE_PREF, true);
+      canRestore = typeof originalValue === "boolean";
+    } catch (e) {}
+
+    if (originalValue !== false) {
+      Zotero.debug("Elsevier PDF Helper: temporarily disabling Zotero Attanger autoMove");
+      Zotero.Prefs.set(ATTANGER_AUTO_MOVE_PREF, false, true);
+      disabled = true;
+    }
+
+    try {
+      const result = await callback();
+      if (disabled) {
+        await Zotero.Promise.delay(3500);
+      }
+      return result;
+    } finally {
+      if (disabled) {
+        if (canRestore) {
+          Zotero.Prefs.set(ATTANGER_AUTO_MOVE_PREF, originalValue, true);
+        } else if (Zotero.Prefs.clear) {
+          Zotero.Prefs.clear(ATTANGER_AUTO_MOVE_PREF, true);
+        }
+        Zotero.debug("Elsevier PDF Helper: restored Zotero Attanger autoMove");
+      }
+    }
   };
 
   elsevierPDF.addTags = async function(item, tags) {
