@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        id="elsevier-pdf-helper-auth-window"
+        title="Elsevier Authorization"
+        orient="vertical"
+        width="1180"
+        height="820"
+        onload="elsevierPDFAuthLoad();">
+  <script type="application/javascript" src="chrome://elsevier-pdf-helper/content/auth.js"/>
+  <hbox align="center" style="padding:8px; gap:8px;">
+    <label value="Elsevier Authorization"/>
+    <spacer flex="1"/>
+    <button label="Copy STPaper URL" oncommand="elsevierPDFAuthCopy('https://www.stpaper.cn/microapp/widget/tools/database');"/>
+    <button label="Copy Elsevier Direct URL" oncommand="elsevierPDFAuthCopy('https://auth.elsevier.com/ShibAuth/institutionLogin?entityID=https%3A%2F%2Fpassport.escience.cn%2Fidp%2Fshibboleth&amp;appReturnURL=https%3A%2F%2Fwww.sciencedirect.com%2Fuser%2Frouter%2Fshib%3FtargetURL%3Dhttps%253A%252F%252Fwww.sciencedirect.com%252Fuser%252Frouter%252Flogin%253FtargetURL%253Dhttp%25253A%25252F%25252Fwww.sciencedirect.com%25252F');"/>
+    <button label="Close" oncommand="window.close();"/>
+  </hbox>
+  <vbox flex="1" style="padding:24px; max-width:900px;">
+    <label value="Use Zotero authorization for Elsevier access." style="font-size:16px; font-weight:bold; margin-bottom:12px;"/>
+    <description style="max-width:860px; line-height:1.45;">
+      This helper opens STPaper and Elsevier authorization inside Zotero's own browser so the download command can reuse Zotero's legal access cookies. Finish the institutional login here, then return to Zotero and run the Elsevier PDF download command.
+    </description>
+    <label id="auth-status" value="" style="margin-top:16px;"/>
+  </vbox>
+</window>
